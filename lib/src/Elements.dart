@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:html_xml_parser/src/utils.dart';
 
-
+/// This is a HTML/XML element and it is implemented by
+/// [RootNode],[ElementNode],[TextNode],[CommentNode]
 abstract class Node {
   String type;
   String tag;
@@ -18,13 +19,14 @@ abstract class Node {
     if (tag != null) map["tag"] = tag;
     if (text != null) map["text"] = text;
 
-    if (attributes != null)
+    if (attributes != null) {
       map["attributes"] =
           attributes.map((attribute) => attribute.toMap()).toList();
+    }
 
-    if (children != null)
+    if (children != null) {
       map["children"] = children.map((child) => child.toMap()).toList();
-
+    }
     return map;
   }
 
@@ -41,6 +43,7 @@ abstract class Node {
   }
 }
 
+///It is the starting point of JSON it contains children which are actual HTML/XML elements.
 class RootNode extends Node {
   String type = NodeType.ROOT;
   List<Node> children;
@@ -48,6 +51,7 @@ class RootNode extends Node {
   RootNode(this.children) : super(NodeType.ROOT, children: children);
 }
 
+///It is the HTML/XML tag which contains attributes and children.
 class ElementNode extends Node {
   String type = NodeType.ELEMENT;
   String tag;
@@ -59,6 +63,9 @@ class ElementNode extends Node {
             tag: tag, attributes: attributes, children: children);
 }
 
+///It is the text content inside HTML/XML element.
+///Ex. <div>Hello world!</div>
+///Here `Hello world!` is the TextNode
 class TextNode extends Node {
   String type = NodeType.TEXT;
   String text;
@@ -66,6 +73,7 @@ class TextNode extends Node {
   TextNode(this.text) : super(NodeType.TEXT, text: text);
 }
 
+///It is the comment in between nodes.
 class CommentNode extends Node {
   String type = NodeType.COMMENT;
   String text;
@@ -73,6 +81,7 @@ class CommentNode extends Node {
   CommentNode(this.text) : super(NodeType.COMMENT, text: text);
 }
 
+///There are the attributes of HTML/XML element. SO only [ElementNode] supports attribute.
 class Attribute {
   String name;
   String value;

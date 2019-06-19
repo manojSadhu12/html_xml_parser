@@ -1,6 +1,6 @@
 name: html_xml_parser
 description: A Dart library for parsing HTML or XML into Dart objects, Map, json string and vice-versa.
-version: 0.0.1
+version: 0.1.0
 homepage: https://github.com/manojSadhu12/html_xml_parser.git
 author: Manoj Sadhu <sadhu.manojkumar@gmail.com>
 

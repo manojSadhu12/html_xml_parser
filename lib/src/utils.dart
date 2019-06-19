@@ -4,6 +4,7 @@ import 'Elements.dart';
 import 'htmlparser.dart';
 
 class MarkupUtils {
+  ///Converts [Map] to [Node]
   static Node mapToNode(Map<String, dynamic> json) {
     dynamic node;
     switch (json["type"]) {
@@ -21,23 +22,27 @@ class MarkupUtils {
         break;
     }
 
-    if (json["children"] != null)
+    if (json["children"] != null) {
       node.children =
           (json["children"] as List<dynamic>).map((c) => mapToNode(c)).toList();
+    }
 
-    if (json["attributes"] != null)
+    if (json["attributes"] != null) {
       node.attributes = (json["attributes"] as List<dynamic>)
           .map((attr) =>
               Attribute(attr["name"], attr["value"], attr["valueOriginal"]))
           .toList();
+    }
 
     return node;
   }
 
+  ///Converts json to [Node]
   static Node jsonToNode(String jsonString) {
     return mapToNode(jsonDecode(jsonString));
   }
 
+  ///Removes DOCTYPE
   static _removeDOCTYPE(String html) {
     String xmlType;
     if ((xmlType = RegExp(r"<\?xml.*\?>").stringMatch(html)) != null) {
@@ -56,6 +61,7 @@ class MarkupUtils {
     return html;
   }
 
+  ///Converts HTML/XML string to [Node]
   static Node markup2json(String markupString) {
     markupString = _removeDOCTYPE(markupString);
 
@@ -123,11 +129,14 @@ class MarkupUtils {
     return results;
   }
 
+  ///Converts jsonString to markupString
   static String jsonToMarkup(String jsonString) =>
       _parse(jsonDecode(jsonString));
 
+  ///Converts [Map] to markupString
   static String mapToMarkup(Map<String, dynamic> jsonMap) => _parse(jsonMap);
 
+  ///Converts [Map] to markupString
   static String _parse(Map<String, dynamic> json) {
     var child = '';
     if (json["children"] != null) {
@@ -173,6 +182,7 @@ class MarkupUtils {
   }
 }
 
+///These are node types that are supported.
 class NodeType {
   static const String ROOT = "root";
   static const String ELEMENT = "element";
